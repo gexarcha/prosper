@@ -168,3 +168,15 @@ def allsum(my_a, axis=None, dtype=None, out=None, comm=MPI.COMM_WORLD):
         return sum
     else:
         return comm.allreduce(my_sum)
+
+
+
+def allunique(my_a, out=None, comm=MPI.COMM_WORLD):
+    """ Parallel (collective) version of numpy.unique
+    """
+    my_unique = np.unique(my_a)
+
+    if type(my_unique) == np.ndarray:
+        return np.unique(np.concatenate(comm.allgather(my_unique)))
+    else:
+        return comm.allgather(my_unique)
