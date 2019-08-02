@@ -1,5 +1,6 @@
 #
-#  Author:   Marc Henniges
+#  Author:   Georgios Exarchakis    georgios.exarchakis@ens.fr
+#        and Marc Henniges
 #        and Jorg Bornschein <bornschein@fias.uni-frankfurt.de)
 #  Lincense: Academic Free License (AFL) v3.0
 #
@@ -67,6 +68,7 @@ class DBSC_ET(CAModel):
         a data['candidates'] dataset. A set of self.Hprime candidates
         will be selected.
         """
+        comm = self.comm
         my_y = data['y']
         my_l = data['l']
 
