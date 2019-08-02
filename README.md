@@ -8,19 +8,30 @@ Introduction
 This package contains all the source code to reproduce the numerical
 experiments described in the paper. It contains a parallelized implementation
 of the Binary Sparse Coding (BSC) [1], Gaussian Sparse Coding (GSC) [2], 
-Maximum Causes Analysis (MCA) [3], Maximum Magnitude Causes Analysis (MMCA) [4] and 
-Ternary Sparse Coding (TSC) [5] models. All these probabilistic generative models 
+Maximum Causes Analysis (MCA) [3], Maximum Magnitude Causes Analysis (MMCA) [4], 
+Ternary Sparse Coding (TSC) [5], and Discrete Sparse Coding [7] models. All these probabilistic generative models 
 are trained using a truncated Expectation Maximization (EM) algorithm [6].
 
 
 Software dependencies
 =====================
  
- * Python (>= 2.6)
- * NumPy (reasonably recent)
- * SciPy (reasonably recent)
- * pytables (reasonably recent)
- * mpi4py (>= 1.3)
+Python related dependencies can be installed using:
+```
+  $ pip install -r requirements.txt
+```
+
+MPI4PY also requires a system level installation of MPI. 
+You can do that on MacOS using Homebrew:
+```
+  $ brew install mpich
+```
+for Ubuntu systems:
+```
+  $ sudo apt install mpich
+```
+for any other system you might wish to review the relevent section of the MPI4PY [installation guidelines](https://mpi4py.readthedocs.io/en/stable/appendix.html#building-mpi)
+
 
 Overview
 ========
@@ -33,12 +44,12 @@ examples/   - Small examples for initializing and running the models
 
 
 Installation
-=======
+============
 
 To install the library run:
 
 ```
-  $ git clone git@bitbucket.org:mlold/prosper.git
+  $ git clone git@github.com:mlold/prosper.git
   $ cd prosper
   $ python setup.py install
 ```
@@ -56,7 +67,7 @@ To run some toy examples:
 
 ```
   $ cd examples/barstest
-  $ python bars-run-all.py param-bars-<...>.py
+  $ python bars-learning-and-inference.py param-bars-<...>.py
 ```
 
 where <...> should be appropriately replaced to correspond to one of the parameter 
@@ -86,11 +97,11 @@ To run the same script as above, e.g.,
 
 a) On a multi-core machine with 32 cores:
 
- `$ mpirun -np 32 python bars-run-all.py param-bars-<...>.py`
+ `$ mpirun -np 32 bars-learning-and-inference.py param-bars-<...>.py`
 
 b) On a cluster:
 
- `$ mpirun --hostfile machines python bars-run-all.py param-bars-<...>.py`
+ `$ mpirun --hostfile machines python bars-learning-and-inference.py param-bars-<...>.py`
 
  where 'machines' contains a list of suitable machines.
 

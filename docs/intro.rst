@@ -13,12 +13,12 @@ Installation
 ============
 
 The recommended approch to install the framework is to obtain 
-the most recent stable version from `bitbucket.org`:
+the most recent stable version from `github.com`:
 
 .. code-block:: bash
 
-    git checkout https://bitbucket.org/mlold/pylib.git
-    cd pylib
+    git checkout https://github.com/ml-uol/prosper.git
+    cd prosper
     python setup.py develop --user
 
 After installation you should run the testsuite to ensure all neccessary 
