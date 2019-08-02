@@ -70,7 +70,7 @@ class DBSC_ET(CAModel):
         my_y = data['y']
         my_l = data['l']
 
-        if 'm' is not in self.__dict__.keys():
+        if 'm' not in self.__dict__.keys():
             self.labels = parallel.allunique(my_l)
             if comm.rank==0:
                 m = np.random.randint(0, 2, (self.labels.shape[0], self.H), dtype=bool)
