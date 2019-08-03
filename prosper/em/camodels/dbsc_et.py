@@ -70,30 +70,44 @@ class DBSC_ET(CAModel):
         """
         comm = self.comm
         my_y = data['y']
-        my_l = data['l']
+        if 'l' in dada.keys():
+            comm = self.comm
+            my_l = data['l']
 
-        if 'm' not in self.__dict__.keys():
-            self.labels = parallel.allunique(my_l)
-            if comm.rank==0:
-                m = np.random.randint(0, 2, (self.labels.shape[0], self.H), dtype=bool)
-            m = comm.bcast(m, root=0)
-            self.m = m
+            if 'm' not in self.__dict__.keys():
+                self.labels = parallel.allunique(my_l)
+                if comm.rank==0:
+                    m = np.random.randint(0, 2, (self.labels.shape[0], self.H), dtype=bool)
+                m = comm.bcast(m, root=0)
+                self.m = m
 
-        W = model_params['W'].T
-        Hprime = self.Hprime
-        my_N, D = my_y.shape
+            W = model_params['W'].T
+            Hprime = self.Hprime
+            my_N, D = my_y.shape
 
-        candidates = np.zeros( (my_N, Hprime), dtype=np.int )
-        for n in range(my_N):
-            sim = np.inner(W,my_y[n])/ np.sqrt(np.diag(np.inner(W,W)))/ np.sqrt(np.inner(my_y[n],my_y[n]))
-            this_m = self.m[my_l[n]]
+            candidates = np.zeros( (my_N, Hprime), dtype=np.int )
+            for n in range(my_N):
+                sim = np.inner(W,my_y[n])/ np.sqrt(np.diag(np.inner(W,W)))/ np.sqrt(np.inner(my_y[n],my_y[n]))
+                this_m = self.m[my_l[n]]
 
-            inds = list(np.argsort(sim))#[-Hprime:]
-            l_inds = np.arange(self.H)[this_m]
-            inds = [x for x in inds if x in l_inds]
-            candidates[n] = inds[-Hprime:]
+                inds = list(np.argsort(sim))#[-Hprime:]
+                l_inds = np.arange(self.H)[this_m]
+                inds = [x for x in inds if x in l_inds]
+                candidates[n] = inds[-Hprime:]
+            
+            data['candidates'] = candidates
+        else:
+            W = model_params['W'].T
+            Hprime = self.Hprime
+            my_N, D = my_y.shape
+
+            candidates = np.zeros( (my_N, Hprime), dtype=np.int )
+            for n in range(my_N):
+                sim = np.inner(W,my_y[n])/ np.sqrt(np.diag(np.inner(W,W)))/ np.sqrt(np.inner(my_y[n],my_y[n]))
+                candidates[n] = np.argsort(sim)[-Hprime:]
+            
+            data['candidates'] = candidates
         
-        data['candidates'] = candidates
         return data
 
 
