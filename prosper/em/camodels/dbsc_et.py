@@ -70,7 +70,7 @@ class DBSC_ET(CAModel):
         """
         comm = self.comm
         my_y = data['y']
-        if 'l' in dada.keys():
+        if 'l' in data.keys():
             comm = self.comm
             my_l = data['l']
 
@@ -107,7 +107,7 @@ class DBSC_ET(CAModel):
                 candidates[n] = np.argsort(sim)[-Hprime:]
             
             data['candidates'] = candidates
-        
+
         return data
 
 
