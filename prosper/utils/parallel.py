@@ -95,6 +95,8 @@ def allsort(my_array,
     shape = my_array.shape
     all_shape = list(shape)
     all_shape[axis] = comm.allreduce(shape[axis])
+    import sys
+    sys.stdout.flush()
 
     if not my_array.dtype in typemap:
         raise TypeError("Dont know how to handle arrays of type %s" %
@@ -104,7 +106,8 @@ def allsort(my_array,
     my_sorted = np.sort(my_array, axis, kind, order)
 
     all_array = np.empty(shape=all_shape, dtype=my_sorted.dtype)
-    comm.Allgather((my_sorted, mpi_type), (all_array, mpi_type))
+    # comm.Allgather((my_sorted, mpi_type), (all_array, mpi_type))
+    all_array = np.concatenate(comm.allgather(my_sorted))
 
     all_sorted = np.sort(all_array, axis, 'mergesort', order)
     return all_sorted
@@ -129,7 +132,8 @@ def allargsort(my_array,
     my_sorted = np.argsort(my_array, axis, kind, order)
 
     all_array = np.empty(shape=all_shape, dtype=my_sorted.dtype)
-    comm.Allgather((my_sorted, mpi_type), (all_array, mpi_type))
+    # comm.Allgather((my_sorted, mpi_type), (all_array, mpi_type))
+    all_array = np.concatenate(comm.allgather(my_sorted))
 
     all_sorted = np.argsort(all_array, axis, kind, order)
     return all_sorted
