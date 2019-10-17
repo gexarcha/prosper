@@ -35,17 +35,17 @@ if __name__ == "__main__":
 
     # Extract some parameters
     N = params.get('N', 5000)            # no. of datapoint in the testset
-    N_train = int(0.9*N)
-    N_test  = N-N_train
+    N_train = int(0.9 * N)
+    N_test = N - N_train
     size = params.get('size', 5)         # width / height of bars images
-    p_bar = params.get('p_bar', 1./size) # prob. for a bar to be active
+    p_bar = params.get('p_bar', 1. / size)  # prob. for a bar to be active
     D = params.get('D', size**2)         # observed dimensionality
-    H = params.get('H', 2*size)          # latent dimensionality
+    H = params.get('H', 2 * size)          # latent dimensionality
     model = params['model']              # the actual generative model
     model_str = model.__class__.__name__
 
     # Ground truth parameters -- only used for generation
-    params_gt = params.get('params_gt')  # Ground truth param 
+    params_gt = params.get('params_gt')  # Ground truth param
 
     # Create output path
     output_path = create_output_path('learning-and-inference-' + param_fname)

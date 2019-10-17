@@ -33,17 +33,17 @@ def np_product(iterable,repeat=2):
         np.indices((len(iterable),) * repeat), 0, repeat )
         .reshape(-1, repeat)]
 
-def get_states(states, Hprime, gamma):
-    tmp = np.array(list(itls.product(states, repeat=Hprime)))
-    c1 = (np.sum(tmp != 0, 1) <= gamma) * (np.sum(tmp != 0, 1) > 1)
-    return tmp[c1]
+# def get_states(states, Hprime, gamma):
+    # tmp = np.array(list(itls.product(states, repeat=Hprime)))
+    # c1 = (np.sum(tmp != 0, 1) <= gamma) * (np.sum(tmp != 0, 1) > 1)
+    # return tmp[c1]
 
 def get_states_np(states, Hprime, gamma):
     tmp = np_product(states, repeat=Hprime)
     c1 = (np.sum(tmp != 0, 1) <= gamma) * (np.sum(tmp != 0, 1) > 1)
     return tmp[c1]
 
-def get_states2(states, Hprime, gamma):
+def get_states(states, Hprime, gamma):
     # assert type(states)==np.array
     assert len(states.shape)==1
     pd = itls.product(states, repeat=Hprime)
@@ -62,7 +62,7 @@ def generate_state_matrix(Hprime, gamma,states=None):
     :param gamma: int
 
     """
-    state_matrix = get_states_np(states,Hprime,gamma)
+    state_matrix = get_states(states,Hprime,gamma)
     no_states = state_matrix.shape[0]
 
 
